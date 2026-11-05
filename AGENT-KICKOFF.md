@@ -4,7 +4,8 @@ Lire `PROJECT-SPEC.md` pour les résultats de l'audit, les sources et les critè
 `PROTOTYPE-RESULTS.md` est une archive du premier jalon. Le pilote existe désormais
 dans `upstream/crates/moli-matter` ; la pile corrigée est dans `matter-stack`.
 Ne pas refaire l'audit ni le prototype : vérifier les derniers commits et résultats.
-Le code upstream est dans `upstream/`, clone Git indépendant ignoré par Molly.
+Lire `STATUS.md` en priorité : la PR #144 est publiée, avec ses limites et les
+révisions exactes. Le code upstream est dans `upstream/`, clone Git indépendant ignoré par Molly.
 Lire son `AGENTS.md`, puis les documents qu'il impose avant toute modification.
 
 1. Actualiser upstream et recontrôler branches/PR/roadmap Matter : ne pas dupliquer
@@ -33,5 +34,8 @@ L'utilisateur autorise les sous-agents et le choix de modèles GPT/niveaux de
 reasoning et modèles gratuits pour économiser les tokens. Découvrir le catalogue
 T3 vivant ; ne pas déduire la gratuité d'un nom de fournisseur. Préférer les tâches
 ciblées, sans duplication, et le reasoning faible pour les contrôles simples.
+Pour les modèles gratuits, l'utilisateur préfère les modèles `nvidia/...` du
+provider OpenCode ; éviter `opencode/...-free`. Vérifier leurs options dans le
+catalogue vivant et ne pas relancer un travail déjà en cours pour changer de modèle.
 Appliquer Ponytail et utiliser RTK pour les sorties adaptées, en conservant les
 erreurs complètes si nécessaire. Ne pas déléguer plus cher que le travail économisé.

@@ -3,14 +3,15 @@
 # Molly — intégration Matter/Thread pour Moli OS
 
 Ce dépôt rassemble le développement et les vérifications d'une contribution à
-[Moli OS](https://github.com/rudy-io/moli-os). Le code destiné à Moli est préparé
-localement dans `upstream/`, pour publication dans
-[notre fork](https://github.com/Roddygithub/moli-os), et les correctifs nécessaires
+[Moli OS](https://github.com/rudy-io/moli-os). Le pilote est publié dans
+[notre fork](https://github.com/Roddygithub/moli-os/tree/feat/matter-native)
+et proposé dans la [PR officielle #144](https://github.com/rudy-io/moli-os/pull/144).
+Les correctifs nécessaires
 au contrôleur dans [notre fork Matter](https://github.com/Roddygithub/matter-rust/tree/moli-deadlines).
 Le dépôt officiel n'est modifié que si ses mainteneurs acceptent une pull request.
 
-**Projet en pause à la demande de l'utilisateur.** État vérifié et instructions
-de reprise : [PAUSED.md](PAUSED.md).
+État vérifié, mesures et étapes restantes : [STATUS.md](STATUS.md).
+La proposition est discutée dans [Moli #142](https://github.com/rudy-io/moli-os/issues/142).
 
 Le pilote natif couvre appairage sur IP, commandes OnOff, abonnements, capteurs
 et endpoints derrière un pont. Il réutilise le coffre chiffré et la garde de Moli.
@@ -23,7 +24,7 @@ un espace réseau isolé. Les essais matériels par API Hue ne constituent pas u
 validation du pilote Matter. Le support radio Thread/BLE reste à valider sur matériel.
 
 [Cadrage](PROJECT-SPEC.md) · [Évaluation initiale](PROTOTYPE-RESULTS.md) ·
-[Test d'interopérabilité](e2e/README.md).
+[Test d'interopérabilité](https://github.com/Roddygithub/moli-os/tree/feat/matter-native/tools/matter-e2e).
 
 ## Prototype initial
 
@@ -47,3 +48,13 @@ valide pas une sauvegarde sur disque, une reprise après coupure ou un appareil 
 
 `scripts/hue-pair.sh` est un outil d'appairage à l'API propriétaire Hue, distinct
 de l'appairage Matter. Il n'est pas utilisé par le nouveau pilote.
+
+## Récupérer la contribution
+
+```sh
+git clone --branch feat/matter-native https://github.com/Roddygithub/moli-os.git upstream
+git -C upstream checkout f8ab3de978a221c36482eb492fd74b913c7d1cb2
+```
+
+Ce checkout est autonome : Cargo récupère la pile Matter à sa révision Git épinglée.
+Le dossier frère `matter-stack` n'est nécessaire que pour travailler sur cette pile.

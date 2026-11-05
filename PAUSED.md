@@ -1,7 +1,7 @@
-# Point de reprise — projet en pause
+# Archive du point de reprise
 
-Pause demandée par l'utilisateur pour redémarrer sa session. Ne lancer aucune
-nouvelle tâche ni aucun test physique avant sa demande de reprise.
+Pause demandée par l'utilisateur pour redémarrer sa session, puis levée par sa
+demande de reprise. Ce document conserve l'état historique de cette sauvegarde.
 
 ## État sauvegardé
 
