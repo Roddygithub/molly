@@ -6,14 +6,14 @@ Ce dépôt rassemble le développement et les vérifications d'une contribution 
 [Moli OS](https://github.com/rudy-io/moli-os). Le pilote est publié dans
 [notre fork](https://github.com/Roddygithub/moli-os/tree/feat/matter-native)
 et proposé dans la [PR officielle #144](https://github.com/rudy-io/moli-os/pull/144).
-Les correctifs nécessaires
-au contrôleur dans [notre fork Matter](https://github.com/Roddygithub/matter-rust/tree/moli-deadlines).
+La pile corrigée est incluse directement dans `vendor/matter-rust` de la contribution ;
+aucun fork personnel n’est nécessaire pour construire Moli.
 Le dépôt officiel n'est modifié que si ses mainteneurs acceptent une pull request.
 
 État vérifié, mesures et étapes restantes : [STATUS.md](STATUS.md).
 La proposition est discutée dans [Moli #142](https://github.com/rudy-io/moli-os/issues/142).
 
-Le pilote natif couvre appairage sur IP, commandes OnOff, abonnements, capteurs
+Le pilote natif couvre appairage sur IP, commandes OnOff, variation/couleur, stores, thermostats, serrures sous garde, abonnements, capteurs
 et endpoints derrière un pont. Il réutilise le coffre chiffré et la garde de Moli.
 Une image compacte optionnelle respecte 25 Mo, en retirant uniquement les symboles
 de diagnostic ; le build standard les garde. Voir le [guide de build](https://github.com/Roddygithub/moli-os/blob/feat/matter-native/docs/components/exploitation.md).
@@ -22,7 +22,7 @@ Un mode Bluetooth optionnel permet de transmettre à un appareil un dataset Thre
 existant ; un routeur Thread reste nécessaire. Aucun service Python/Matter Server
 n'est ajouté au chemin d'exécution.
 
-Les tests de protocole utilisent une lampe virtuelle indépendante matter.js dans
+Les tests de protocole utilisent des appareils virtuels indépendants matter.js dans
 un espace réseau isolé. Un essai réel sur pont Hue a validé OnOff via Moli/Matter,
 avec observation indépendante et restauration de la lampe ; voir le rapport matériel
 dans la contribution. Le support radio Thread/BLE reste à valider sur matériel.

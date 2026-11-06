@@ -1,91 +1,46 @@
-# État de la contribution — 6 novembre 2026
+# État de la contribution Matter — 6 novembre 2026
 
-La contribution est publiée et **prête pour revue par les mainteneurs**, non fusionnée
-et sans déclaration de stabilité de tous les chemins matériels :
+La contribution est proposée dans la [PR officielle Moli #144](https://github.com/rudy-io/moli-os/pull/144).
+Le code se trouve dans la branche `feat/matter-native` du fork Moli ; les mainteneurs
+peuvent l'intégrer directement. La pile corrigée est incluse dans `vendor/matter-rust`,
+avec licence et provenance : aucune dépendance de build à un fork personnel ou à un
+checkout voisin. Le dépôt présent sert au suivi et au prototype historique.
 
-- [PR officielle Moli #144](https://github.com/rudy-io/moli-os/pull/144), liée à
-  [la proposition #142](https://github.com/rudy-io/moli-os/issues/142).
-- Fork Moli, branche `feat/matter-native`, commit
-  `4ea270b094a7e0291a8be3c4abd9fab068bf6be1`, rebasé sur `9ce5868`.
-- Pile Matter dans le fork `Roddygithub/matter-rust`, révision épinglée
-  `d80b1a3fd2204119ddf47406f4bb59916ba7576b` (branche `moli-deadlines`).
-- Les deux checkouts locaux sont indépendants du dépôt de suivi et exclus par
-  `.gitignore`. Les sources publiées ci-dessus permettent de les recréer.
+Fonctions proposées : OnOff, variation et couleur, stores de levage, thermostats
+à consignes simples ou doubles, serrures soumises à approbation et capteurs.
+L'activation dépend des capacités et politiques annoncées par chaque appareil.
+Cela ne garantit pas toutes les fonctions de tous les produits Matter.
 
-## Vérifications
+La dernière synchronisation intègre les changements officiels de sécurité API et
+de dashboard jusqu'à `1288d93`. Les contrôles passent : **2 241 tests Rust**
+(1 325 Moli et 916 ciblés de la pile), **191 tests frontend**, build web,
+traductions FR/EN (3 623 clés), formatage, clippy, catalogue et anti-fuite.
+Le minimum Rust 1.89 et l'audit des dépendances ont été contrôlés.
 
-`sh scripts/check.sh` dans l'image de développement musl, en ne montant que le
-checkout Moli : **1 308 tests**, formatage, clippy, catalogue et anti-fuite passent.
-Les six avertissements de catalogue concernent des profils préexistants.
-Dix tests du pilote avec BLE activé passent également (compilation/tests, sans radio). Le build web de l'image
-de production et le contrôle de traduction FR/EN passent.
+La suite indépendante matter.js valide les familles étendues sur des appareils
+virtuels dans un réseau isolé : commandes, abonnements, approbation, refus sans
+transmission, changement de politique PIN, reprise et refus d'états invalides.
+Les résultats exacts des artefacts sont conservés dans la contribution.
 
-L'image scratch du Dockerfile de production a été construite. Son binaire extrait
-a passé le test indépendant matter.js : appairage avec attestation, découverte,
-commandes REST, abonnements, reprise après redémarrage et refus d'états corrompus.
-Les processus de test sont isolés du réseau physique. Résultats et hash dans
-`upstream/tools/matter-e2e/RESULTS.md` et dans la branche publiée.
+L'essai physique historique a validé OnOff sur un pont Hue v2 avec observation
+indépendante et restauration de l'état initial. Les autres familles physiques et
+la radio Thread/BLE restent à valider sur du matériel adapté ; aucun nouvel essai
+matériel n'est attendu de l'utilisateur.
 
-Image standard initiale non compressée : **30 113 713 octets**, au-dessus de l'objectif de 25 Mo.
-Référence sans Matter construite au commit de base : **27 737 521 octets** ;
-delta de la contribution **+2 376 192 octets (+8,57 %)**. Le budget était donc
-déjà dépassé sans Matter et reste à traiter. Image finale construite au commit
-`d6add50`, avec correctif d’attestation et noms bridgés.
-Avec une lampe virtuelle au repos sur 29,78 secondes : 17 324 Kio RSS et 3 460 Kio
-de mémoire anonyme du processus ; CPU 0,000 % à la résolution des ticks. Ce ne sont
-pas les mesures cgroup définies par le budget Moli.
+Références maintenues dans la contribution :
 
-Un essai Matter IP réel a réussi sur un pont Hue v2 et une lampe neutre autorisée :
-attestation, découverte bridgée/NodeLabel, commande OnOff via Moli REST/Matter,
-abonnement, observation indépendante en lecture seule via Hue, restauration de l'état
-initial sans changement de luminosité/couleur, et reprise des identités après redémarrage.
-Rapport anonymisé : `upstream/integrations/matter/HARDWARE.md`. Le correctif d'attestation
-commonName a passé 622 tests et une revue indépendante. Thread/BLE restent non validés.
+- [Guide de revue](https://github.com/Roddygithub/moli-os/blob/feat/matter-native/integrations/matter/REVIEW.md)
+- [Compatibilité par fonction](https://github.com/Roddygithub/moli-os/blob/feat/matter-native/integrations/matter/COMPATIBILITY.md)
+- [Résultats et hash des images](https://github.com/Roddygithub/moli-os/blob/feat/matter-native/tools/matter-e2e/RESULTS.md)
+- [Budgets et mesures](https://github.com/Roddygithub/moli-os/blob/feat/matter-native/docs/PERFORMANCE.md)
 
-## Suite : image compacte et minimum Rust vérifié
-
-Une option explicite `MOLI_STRIP_SYMBOLS=true` produit une image de **24 827 312 octets**,
-sous 25 Mo, sans retirer de pilote. Elle retire les noms de symboles des backtraces
-locales ; le build standard les conserve par défaut. Le target `diagnostics` exporte
-le binaire correspondant avec symboles, absent de l'image compacte. Les sections de
-code/données et d'unwind sont identiques entre variantes. Le guide d'exploitation
-et les résultats d'interopérabilité documentent ce compromis.
-
-Le contrôle de l'application complète sous Rust 1.89.0 passe, après remplacement
-de deux syntaxes préexistantes trop récentes, sans changement de comportement.
-La revue des adaptations confirme que le contrôle de pièce reste avant les commandes.
-
-## Remise aux mainteneurs
-
-La PR #144 est sortie du brouillon. Le guide `integrations/matter/REVIEW.md` rassemble
-l'ordre de lecture, les preuves, les correctifs de la pile et les choix à arbitrer.
-Un [message de remise](https://github.com/rudy-io/moli-os/pull/144#issuecomment-6679864688)
-a été publié. Les runs GitHub `check` et `audit` du head `4ea270b` affichent
-`action_required` : les contrôles locaux passent, mais une action côté dépôt reste
-nécessaire sur les workflows avant fusion. Ce point est signalé aux mainteneurs.
-L'audit `cargo-audit` 0.22.2 passe avec la base RustSec actualisée,
-les exceptions TLS préexistantes et leur garde (15 tests) ; un avertissement de
-dépendance non maintenue reste documenté, sans nouvel ignore.
-
-L'utilisateur ne dispose pas du matériel pour Thread/BLE. Aucune nouvelle action
-matérielle n'est attendue de sa part : la suite de cette validation est réservée à
-un environnement équipé. Les limites sont explicites dans les rapports remis.
-
-## Arbitrages et validations pour une version stable
-
-1. Retour des mainteneurs sur le périmètre, le coffre durable, le fork de pile et
-   le passage à Rust 1.89. `cargo check --locked -p moli-os` passe maintenant sur
-   Rust 1.89.0 (application complète, fonctionnalités par défaut). Deux syntaxes
-   préexistantes trop récentes ont été remplacées sans changement fonctionnel.
-2. Option compacte sous 25 Mo validée et documentée ; choix du profil par défaut
-   à arbitrer avec les mainteneurs (symboles de diagnostic conservés par défaut).
-   Pas de référence HA ni de charge multi-appareils.
-3. Étendre la validation Matter IP au-delà d'un pont et d'une lampe. Les codes restent
-   saisis localement par l'opérateur via `scripts/pair-matter.sh`, jamais dans un chat ou un dépôt.
-4. Validation matérielle Thread/BLE, batterie et reprise après coupure. Le mode
-   BLE transmet un dataset existant et ne remplace pas un routeur Thread.
-
-Ne pas refaire les revues déjà clôturées : les précédents problèmes d'annulation,
-de retransmissions MRP, de redécouverte et de cache au passage de lease ont été
-corrigés et revérifiés. Pour les délégations gratuites, préférer les modèles
-NVIDIA du provider OpenCode conformément au choix de l'utilisateur.
+La contribution Matter est suivie dans la PR #144 officielle. Une fusion dans le
+fork personnel (PR #1) ne signifie pas une intégration chez Moli.
+Le coffre durable est proposé séparément dans la [PR #148](https://github.com/rudy-io/moli-os/pull/148),
+et la compatibilité Clippy dans la [PR #147](https://github.com/rudy-io/moli-os/pull/147).
+La revue récente borne les verrous du coffre et préserve les appareils lors de la
+redécouverte. Le timeout Hue ultérieur reste de cause inconnue ; les essais Hue
+réussis sont historiques. Les tailles publiées sont liées aux artefacts identifiés,
+sans nouvelle mesure de production après ces corrections.
+L’intégration reste une décision des mainteneurs.
+Les contrôles locaux ne valent pas approbation des workflows GitHub ni certification Matter.
