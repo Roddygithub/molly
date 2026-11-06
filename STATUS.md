@@ -6,7 +6,7 @@ prête pour une installation stable :
 - [PR officielle Moli #144](https://github.com/rudy-io/moli-os/pull/144), liée à
   [la proposition #142](https://github.com/rudy-io/moli-os/issues/142).
 - Fork Moli, branche `feat/matter-native`, commit
-  `68d19e16f4f92867977311dd9a4f7396463e7782`, rebasé sur `9ce5868`.
+  `f6d2e0b7ee909a94ffdce2b87d8399def42b3cde`, rebasé sur `9ce5868`.
 - Pile Matter dans le fork `Roddygithub/matter-rust`, révision épinglée
   `d80b1a3fd2204119ddf47406f4bb59916ba7576b` (branche `moli-deadlines`).
 - Les deux checkouts locaux sont indépendants du dépôt de suivi et exclus par
@@ -26,7 +26,7 @@ commandes REST, abonnements, reprise après redémarrage et refus d'états corro
 Les processus de test sont isolés du réseau physique. Résultats et hash dans
 `upstream/tools/matter-e2e/RESULTS.md` et dans la branche publiée.
 
-Image non compressée : **30 113 713 octets**, au-dessus de l'objectif de 25 Mo.
+Image standard initiale non compressée : **30 113 713 octets**, au-dessus de l'objectif de 25 Mo.
 Référence sans Matter construite au commit de base : **27 737 521 octets** ;
 delta de la contribution **+2 376 192 octets (+8,57 %)**. Le budget était donc
 déjà dépassé sans Matter et reste à traiter. Image finale construite au commit
@@ -42,13 +42,28 @@ initial sans changement de luminosité/couleur, et reprise des identités après
 Rapport anonymisé : `upstream/integrations/matter/HARDWARE.md`. Le correctif d'attestation
 commonName a passé 622 tests et une revue indépendante. Thread/BLE restent non validés.
 
+## Suite : image compacte et minimum Rust vérifié
+
+Une option explicite `MOLI_STRIP_SYMBOLS=true` produit une image de **24 827 312 octets**,
+sous 25 Mo, sans retirer de pilote. Elle retire les noms de symboles des backtraces
+locales ; le build standard les conserve par défaut. Le target `diagnostics` exporte
+le binaire correspondant avec symboles, absent de l'image compacte. Les sections de
+code/données et d'unwind sont identiques entre variantes. Le guide d'exploitation
+et les résultats d'interopérabilité documentent ce compromis.
+
+Le contrôle de l'application complète sous Rust 1.89.0 passe, après remplacement
+de deux syntaxes préexistantes trop récentes, sans changement de comportement.
+La revue des adaptations confirme que le contrôle de pièce reste avant les commandes.
+
 ## À traiter avant une version stable
 
 1. Retour des mainteneurs sur le périmètre, le coffre durable, le fork de pile et
-   le passage à Rust 1.89. Le minimum déclaré n'a pas été compilé séparément ;
-   vérifications avec Rust 1.97 hôte et 1.99.1 musl.
-2. Comparaison de taille terminée ; réduction/découpage ou
-   arbitrage explicite du budget. Pas de référence HA ni de charge multi-appareils.
+   le passage à Rust 1.89. `cargo check --locked -p moli-os` passe maintenant sur
+   Rust 1.89.0 (application complète, fonctionnalités par défaut). Deux syntaxes
+   préexistantes trop récentes ont été remplacées sans changement fonctionnel.
+2. Option compacte sous 25 Mo validée et documentée ; choix du profil par défaut
+   à arbitrer avec les mainteneurs (symboles de diagnostic conservés par défaut).
+   Pas de référence HA ni de charge multi-appareils.
 3. Étendre la validation Matter IP au-delà d'un pont et d'une lampe. Les codes restent
    saisis localement par l'opérateur via `scripts/pair-matter.sh`, jamais dans un chat ou un dépôt.
 4. Validation matérielle Thread/BLE, batterie et reprise après coupure. Le mode

@@ -15,6 +15,9 @@ La proposition est discutée dans [Moli #142](https://github.com/rudy-io/moli-os
 
 Le pilote natif couvre appairage sur IP, commandes OnOff, abonnements, capteurs
 et endpoints derrière un pont. Il réutilise le coffre chiffré et la garde de Moli.
+Une image compacte optionnelle respecte 25 Mo, en retirant uniquement les symboles
+de diagnostic ; le build standard les garde. Voir le [guide de build](https://github.com/Roddygithub/moli-os/blob/feat/matter-native/docs/components/exploitation.md).
+
 Un mode Bluetooth optionnel permet de transmettre à un appareil un dataset Thread
 existant ; un routeur Thread reste nécessaire. Aucun service Python/Matter Server
 n'est ajouté au chemin d'exécution.
@@ -54,7 +57,7 @@ de l'appairage Matter. Il n'est pas utilisé par le nouveau pilote.
 
 ```sh
 git clone --branch feat/matter-native https://github.com/Roddygithub/moli-os.git upstream
-git -C upstream checkout 68d19e16f4f92867977311dd9a4f7396463e7782
+git -C upstream checkout f6d2e0b7ee909a94ffdce2b87d8399def42b3cde
 ```
 
 Ce checkout est autonome : Cargo récupère la pile Matter à sa révision Git épinglée.
