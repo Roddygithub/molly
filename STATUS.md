@@ -60,7 +60,10 @@ La revue des adaptations confirme que le contrôle de pièce reste avant les com
 La PR #144 est sortie du brouillon. Le guide `integrations/matter/REVIEW.md` rassemble
 l'ordre de lecture, les preuves, les correctifs de la pile et les choix à arbitrer.
 Un [message de remise](https://github.com/rudy-io/moli-os/pull/144#issuecomment-6679864688)
-a été publié. L'audit `cargo-audit` 0.22.2 passe avec la base RustSec actualisée,
+a été publié. Les runs GitHub `check` et `audit` du head `4ea270b` affichent
+`action_required` : les contrôles locaux passent, mais une action côté dépôt reste
+nécessaire sur les workflows avant fusion. Ce point est signalé aux mainteneurs.
+L'audit `cargo-audit` 0.22.2 passe avec la base RustSec actualisée,
 les exceptions TLS préexistantes et leur garde (15 tests) ; un avertissement de
 dépendance non maintenue reste documenté, sans nouvel ignore.
 
