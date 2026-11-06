@@ -1,4 +1,4 @@
-# État de la contribution — 5 novembre 2026
+# État de la contribution — 6 novembre 2026
 
 La contribution est publiée et proposée en **brouillon**, pas fusionnée ni déclarée
 prête pour une installation stable :
@@ -6,18 +6,18 @@ prête pour une installation stable :
 - [PR officielle Moli #144](https://github.com/rudy-io/moli-os/pull/144), liée à
   [la proposition #142](https://github.com/rudy-io/moli-os/issues/142).
 - Fork Moli, branche `feat/matter-native`, commit
-  `f8ab3de978a221c36482eb492fd74b913c7d1cb2`, rebasé sur `9ce5868`.
+  `68d19e16f4f92867977311dd9a4f7396463e7782`, rebasé sur `9ce5868`.
 - Pile Matter dans le fork `Roddygithub/matter-rust`, révision épinglée
-  `429350c0171d62fbf911b7600231ba0480d4b875` (branche `moli-deadlines`).
+  `d80b1a3fd2204119ddf47406f4bb59916ba7576b` (branche `moli-deadlines`).
 - Les deux checkouts locaux sont indépendants du dépôt de suivi et exclus par
   `.gitignore`. Les sources publiées ci-dessus permettent de les recréer.
 
 ## Vérifications
 
 `sh scripts/check.sh` dans l'image de développement musl, en ne montant que le
-checkout Moli : **1 306 tests**, formatage, clippy, catalogue et anti-fuite passent.
+checkout Moli : **1 308 tests**, formatage, clippy, catalogue et anti-fuite passent.
 Les six avertissements de catalogue concernent des profils préexistants.
-Huit tests du pilote avec BLE activé passent également. Le build web de l'image
+Dix tests du pilote avec BLE activé passent également (compilation/tests, sans radio). Le build web de l'image
 de production et le contrôle de traduction FR/EN passent.
 
 L'image scratch du Dockerfile de production a été construite. Son binaire extrait
@@ -26,21 +26,31 @@ commandes REST, abonnements, reprise après redémarrage et refus d'états corro
 Les processus de test sont isolés du réseau physique. Résultats et hash dans
 `upstream/tools/matter-e2e/RESULTS.md` et dans la branche publiée.
 
-Image non compressée : **30 078 897 octets**, au-dessus de l'objectif de 25 Mo.
-Avec une lampe virtuelle au repos sur 29,78 secondes : 17 156 Kio RSS et 3 484 Kio
+Image non compressée : **30 113 713 octets**, au-dessus de l'objectif de 25 Mo.
+Référence sans Matter construite au commit de base : **27 737 521 octets** ;
+delta de la contribution **+2 376 192 octets (+8,57 %)**. Le budget était donc
+déjà dépassé sans Matter et reste à traiter. Image finale construite au commit
+`d6add50`, avec correctif d’attestation et noms bridgés.
+Avec une lampe virtuelle au repos sur 29,78 secondes : 17 324 Kio RSS et 3 460 Kio
 de mémoire anonyme du processus ; CPU 0,000 % à la résolution des ticks. Ce ne sont
-pas les mesures cgroup définies par le budget Moli. Aucun résultat matériel
-Matter, Thread ou BLE n'est revendiqué.
+pas les mesures cgroup définies par le budget Moli.
+
+Un essai Matter IP réel a réussi sur un pont Hue v2 et une lampe neutre autorisée :
+attestation, découverte bridgée/NodeLabel, commande OnOff via Moli REST/Matter,
+abonnement, observation indépendante en lecture seule via Hue, restauration de l'état
+initial sans changement de luminosité/couleur, et reprise des identités après redémarrage.
+Rapport anonymisé : `upstream/integrations/matter/HARDWARE.md`. Le correctif d'attestation
+commonName a passé 622 tests et une revue indépendante. Thread/BLE restent non validés.
 
 ## À traiter avant une version stable
 
 1. Retour des mainteneurs sur le périmètre, le coffre durable, le fork de pile et
    le passage à Rust 1.89. Le minimum déclaré n'a pas été compilé séparément ;
    vérifications avec Rust 1.97 hôte et 1.99.1 musl.
-2. Comparaison de taille au même build sans Matter, puis réduction/découpage ou
+2. Comparaison de taille terminée ; réduction/découpage ou
    arbitrage explicite du budget. Pas de référence HA ni de charge multi-appareils.
-3. Appairage Matter réel distinct de l'API Hue. Les codes restent saisis localement
-   par l'opérateur via `scripts/pair-matter.sh`, jamais dans un chat ou un dépôt.
+3. Étendre la validation Matter IP au-delà d'un pont et d'une lampe. Les codes restent
+   saisis localement par l'opérateur via `scripts/pair-matter.sh`, jamais dans un chat ou un dépôt.
 4. Validation matérielle Thread/BLE, batterie et reprise après coupure. Le mode
    BLE transmet un dataset existant et ne remplace pas un routeur Thread.
 

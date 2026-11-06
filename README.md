@@ -20,8 +20,9 @@ existant ; un routeur Thread reste nécessaire. Aucun service Python/Matter Serv
 n'est ajouté au chemin d'exécution.
 
 Les tests de protocole utilisent une lampe virtuelle indépendante matter.js dans
-un espace réseau isolé. Les essais matériels par API Hue ne constituent pas une
-validation du pilote Matter. Le support radio Thread/BLE reste à valider sur matériel.
+un espace réseau isolé. Un essai réel sur pont Hue a validé OnOff via Moli/Matter,
+avec observation indépendante et restauration de la lampe ; voir le rapport matériel
+dans la contribution. Le support radio Thread/BLE reste à valider sur matériel.
 
 [Cadrage](PROJECT-SPEC.md) · [Évaluation initiale](PROTOTYPE-RESULTS.md) ·
 [Test d'interopérabilité](https://github.com/Roddygithub/moli-os/tree/feat/matter-native/tools/matter-e2e).
@@ -53,7 +54,7 @@ de l'appairage Matter. Il n'est pas utilisé par le nouveau pilote.
 
 ```sh
 git clone --branch feat/matter-native https://github.com/Roddygithub/moli-os.git upstream
-git -C upstream checkout f8ab3de978a221c36482eb492fd74b913c7d1cb2
+git -C upstream checkout 68d19e16f4f92867977311dd9a4f7396463e7782
 ```
 
 Ce checkout est autonome : Cargo récupère la pile Matter à sa révision Git épinglée.
