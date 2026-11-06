@@ -1,12 +1,12 @@
 # État de la contribution — 6 novembre 2026
 
-La contribution est publiée et proposée en **brouillon**, pas fusionnée ni déclarée
-prête pour une installation stable :
+La contribution est publiée et **prête pour revue par les mainteneurs**, non fusionnée
+et sans déclaration de stabilité de tous les chemins matériels :
 
 - [PR officielle Moli #144](https://github.com/rudy-io/moli-os/pull/144), liée à
   [la proposition #142](https://github.com/rudy-io/moli-os/issues/142).
 - Fork Moli, branche `feat/matter-native`, commit
-  `f6d2e0b7ee909a94ffdce2b87d8399def42b3cde`, rebasé sur `9ce5868`.
+  `4ea270b094a7e0291a8be3c4abd9fab068bf6be1`, rebasé sur `9ce5868`.
 - Pile Matter dans le fork `Roddygithub/matter-rust`, révision épinglée
   `d80b1a3fd2204119ddf47406f4bb59916ba7576b` (branche `moli-deadlines`).
 - Les deux checkouts locaux sont indépendants du dépôt de suivi et exclus par
@@ -55,7 +55,20 @@ Le contrôle de l'application complète sous Rust 1.89.0 passe, après remplacem
 de deux syntaxes préexistantes trop récentes, sans changement de comportement.
 La revue des adaptations confirme que le contrôle de pièce reste avant les commandes.
 
-## À traiter avant une version stable
+## Remise aux mainteneurs
+
+La PR #144 est sortie du brouillon. Le guide `integrations/matter/REVIEW.md` rassemble
+l'ordre de lecture, les preuves, les correctifs de la pile et les choix à arbitrer.
+Un [message de remise](https://github.com/rudy-io/moli-os/pull/144#issuecomment-6679864688)
+a été publié. L'audit `cargo-audit` 0.22.2 passe avec la base RustSec actualisée,
+les exceptions TLS préexistantes et leur garde (15 tests) ; un avertissement de
+dépendance non maintenue reste documenté, sans nouvel ignore.
+
+L'utilisateur ne dispose pas du matériel pour Thread/BLE. Aucune nouvelle action
+matérielle n'est attendue de sa part : la suite de cette validation est réservée à
+un environnement équipé. Les limites sont explicites dans les rapports remis.
+
+## Arbitrages et validations pour une version stable
 
 1. Retour des mainteneurs sur le périmètre, le coffre durable, le fork de pile et
    le passage à Rust 1.89. `cargo check --locked -p moli-os` passe maintenant sur

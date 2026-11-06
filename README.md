@@ -57,7 +57,7 @@ de l'appairage Matter. Il n'est pas utilisé par le nouveau pilote.
 
 ```sh
 git clone --branch feat/matter-native https://github.com/Roddygithub/moli-os.git upstream
-git -C upstream checkout f6d2e0b7ee909a94ffdce2b87d8399def42b3cde
+git -C upstream checkout 4ea270b094a7e0291a8be3c4abd9fab068bf6be1
 ```
 
 Ce checkout est autonome : Cargo récupère la pile Matter à sa révision Git épinglée.
