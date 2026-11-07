@@ -4,7 +4,7 @@
 
 Référence examinée : `rudy-io/moli-os`, branche `main`, commit
 `c04dd2510ad6524d3568c9d8633a632f8bd90fb7`. Copie de travail locale : `upstream/`
-(clone indépendant, exclu du dépôt Molly).
+(clone indépendant, exclu du dépôt Moli-matter-thread).
 
 Constats :
 

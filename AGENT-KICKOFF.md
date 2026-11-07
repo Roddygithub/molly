@@ -5,7 +5,7 @@ Lire `PROJECT-SPEC.md` pour les résultats de l'audit, les sources et les critè
 dans `upstream/crates/moli-matter` ; la pile corrigée est dans `matter-stack`.
 Ne pas refaire l'audit ni le prototype : vérifier les derniers commits et résultats.
 Lire `STATUS.md` en priorité : la PR #144 est publiée, avec ses limites et les
-révisions exactes. Le code upstream est dans `upstream/`, clone Git indépendant ignoré par Molly.
+révisions exactes. Le code upstream est dans `upstream/`, clone Git indépendant ignoré par Moli-matter-thread.
 Lire son `AGENTS.md`, puis les documents qu'il impose avant toute modification.
 
 1. Actualiser upstream et recontrôler branches/PR/roadmap Matter : ne pas dupliquer

@@ -1,6 +1,6 @@
 <img src="assets/icon.svg" width="64" height="64" alt="">
 
-# Molly — intégration Matter/Thread pour Moli OS
+# Moli-matter-thread — intégration Matter/Thread pour Moli OS
 
 Ce dépôt rassemble le développement et les vérifications d'une contribution à
 [Moli OS](https://github.com/rudy-io/moli-os). Le pilote est publié dans
